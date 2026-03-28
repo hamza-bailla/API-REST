@@ -13,50 +13,31 @@ public class ProduitService {
     @Autowired
     private ProduitRepository produitRepository;
 
-    /**
-     * Récupère la liste de tous les produits
-     */
     public List<Produit> getAllProduits() {
         return produitRepository.findAll();
     }
 
-    /**
-     * Trouve un produit par son ID ou lance une erreur s'il n'existe pas
-     */
     public Produit getProduitById(int id) {
         return produitRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Produit non trouvé avec l'ID : " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Produit non trouvé : " + id));
     }
 
     /**
-     * Crée un nouveau produit
+     * Méthode renommée pour correspondre au contrôleur
      */
-    public Produit createProduit(Produit produit) {
-        // On s'assure que l'ID est null pour forcer la création (Auto-increment)
-        produit.setId(null);
+    public Produit ajouterProduit(Produit produit) {
+        produit.setId(null); // Force l'insertion (ID généré par la base)
         return produitRepository.save(produit);
     }
 
-    /**
-     * Met à jour un produit existant
-     */
     public Produit updateProduit(int id, Produit newProduit) {
-        // On vérifie d'abord si le produit existe
-        Produit produitExistant = getProduitById(id);
-
-        // Mise à jour des champs
-        produitExistant.setNom(newProduit.getNom());
-        produitExistant.setPrix(newProduit.getPrix());
-
-        // Sauvegarde des modifications
-        return produitRepository.save(produitExistant);
+        Produit produit = getProduitById(id);
+        produit.setNom(newProduit.getNom());
+        produit.setPrix(newProduit.getPrix());
+        return produitRepository.save(produit);
     }
 
-    /**
-     * Supprime un produit par son ID
-     */
     public void deleteProduit(int id) {
-        Produit produit = getProduitById(id);
-        produitRepository.delete(produit);
+        produitRepository.delete(getProduitById(id));
     }
 }

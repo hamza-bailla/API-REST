@@ -14,28 +14,18 @@ public class ProduitController {
     private ProduitService produitService;
 
     @GetMapping
-    public List<Produit> getAllProduits() {
+    public List<Produit> list() {
         return produitService.getAllProduits();
     }
 
-    @GetMapping("/{id}")
-    public Produit getProduitById(@PathVariable int id) {
-        return produitService.getProduitById(id);
-    }
-
     @PostMapping
-    public Produit createProduit(@RequestBody Produit produit) {
-        return produitService.createProduit(produit);
-    }
-
-    @PutMapping("/{id}")
-    public Produit updateProduit(@PathVariable int id, @RequestBody Produit produit) {
-        return produitService.updateProduit(id, produit);
+    public Produit save(@RequestBody Produit produit) {
+        // Correction ici : on utilise le nouveau nom 'ajouterProduit'
+        return produitService.ajouterProduit(produit);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduit(@PathVariable int id) {
+    public void delete(@PathVariable Integer id) {
         produitService.deleteProduit(id);
     }
-
 }
